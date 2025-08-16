@@ -1,0 +1,38 @@
+        IDENTIFICATION DIVISION.
+        PROGRAM-ID. PANGRAM.
+        ENVIRONMENT DIVISION.
+        DATA DIVISION.
+        WORKING-STORAGE SECTION.
+        01 WS-SENTENCE PIC X(60).
+        01 WS-RESULT PIC 9.
+      
+        01 WS-LENGTH PIC 9(3).
+        01 WS-INDEX PIC 9(3) VALUE 0.
+        01 WS-LASCII PIC X(1).
+        01 WS-UASCII PIC X(1).
+        01 WS-ACCU PIC 9(2).
+        01 WS-OCC PIC 9(2).
+        PROCEDURE DIVISION.
+        PANGRAM.
+            MOVE 0 TO WS-ACCU
+            MOVE FUNCTION LENGTH(WS-SENTENCE) TO WS-LENGTH
+            PERFORM VARYING WS-INDEX FROM 0 BY 1 UNTIL WS-INDEX > 25
+               MOVE FUNCTION CHAR(WS-INDEX + 98) TO WS-LASCII
+               MOVE FUNCTION CHAR(WS-INDEX + 66) TO WS-UASCII
+               INSPECT WS-SENTENCE TALLYING WS-OCC FOR ALL WS-UASCII
+               INSPECT WS-SENTENCE TALLYING WS-OCC FOR ALL WS-LASCII
+
+               IF WS-OCC >= 1
+                  ADD 1 TO WS-ACCU
+               END-IF
+
+               MOVE 0 TO WS-OCC
+            END-PERFORM
+      
+            IF WS-ACCU = 26
+               MOVE 1 TO WS-RESULT
+            ELSE
+               MOVE 0 TO WS-RESULT
+            END-IF.
+
+      
